@@ -16,20 +16,6 @@ This project is a machine learning-based implementation of the Flappy Bird game,
 - **Evolution Functions**: `evolve_population`, `crossover`, and `mutate` handle the genetic algorithm, including breeding and mutation of birds.
 - **Game Loop**: Runs the game simulation, updating birds and pipes, rendering the game, and handling generation evolution.
 
-## How to Run
-
-1. Install the necessary dependencies:
-    ```bash
-    pip install pygame numpy
-    ```
-
-2. Run the game:
-    ```bash
-    python flappy_bird_ml.py
-    ```
-
-3. Use the game window to observe the evolution of the birds across generations.
-
 ## Configuration
 
 You can modify the neural network and genetic algorithm parameters in the `bird_config` dictionary within the script. Parameters include:
@@ -55,14 +41,9 @@ You can modify the neural network and genetic algorithm parameters in the `bird_
     - Passing through pipes (large fitness boost).
     - An additional exponential multiplier is applied for higher scores.
 
-## Customization
-
-Feel free to modify the game by changing the following aspects:
-- **Pipes**: Adjust the gap height or frequency to increase difficulty.
-- **Neural Network Architecture**: Experiment with different numbers of hidden neurons or activation functions.
-- **Genetic Algorithm**: Adjust the mutation rate, number of elites, or selection mechanism for more diverse or refined evolutionary behavior.
-
 ## Credits
 
 Inspired by the original Flappy Bird game. This project showcases the application of neural networks and genetic algorithms in a game-based learning environment.
+
+![Bird GIF](bird.gif)
 
