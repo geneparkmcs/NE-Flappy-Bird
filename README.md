@@ -2,6 +2,11 @@
 
 This project is a machine learning-based implementation of the Flappy Bird game, where the bird is controlled by a neural network. The game simulates an evolving population of birds using a genetic algorithm, with each generation learning to improve through mutations and crossover.
 
+<div align="center">
+  <img src="bird.gif" alt="Bird GIF">
+</div>
+
+
 ## Features
 - **Neural Network Control**: Each bird in the game is controlled by a neural network that learns how to navigate the pipes.
 - **Genetic Algorithm**: Birds evolve using a genetic algorithm with elitism, crossover, and mutation.
@@ -44,8 +49,3 @@ You can modify the neural network and genetic algorithm parameters in the `bird_
 ## Credits
 
 Inspired by the original Flappy Bird game. This project showcases the application of neural networks and genetic algorithms in a game-based learning environment.
-
-<div align="center">
-  <img src="bird.gif" alt="Bird GIF">
-</div>
-
