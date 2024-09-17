@@ -45,5 +45,7 @@ You can modify the neural network and genetic algorithm parameters in the `bird_
 
 Inspired by the original Flappy Bird game. This project showcases the application of neural networks and genetic algorithms in a game-based learning environment.
 
-![Bird GIF](bird.gif)
+<div align="center">
+  <img src="bird.gif" alt="Bird GIF">
+</div>
 
