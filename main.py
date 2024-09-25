@@ -1,131 +1,9 @@
 import numpy as np
 import pygame
 import random
-
-class NeuralNetwork:
-    def __init__(self, config):
-        self.num_inputs = config['num_inputs']
-        self.num_hidden = config['num_hidden']
-        self.num_outputs = config['num_outputs']
-        
-        self.weights_input_hidden = np.random.normal(config['weight_init_mean'], config['weight_init_stdev'], (self.num_inputs, self.num_hidden))
-        self.weights_hidden_output = np.random.normal(config['weight_init_mean'], config['weight_init_stdev'], (self.num_hidden, self.num_outputs))
-        
-        self.bias_hidden = np.random.normal(config['bias_init_mean'], config['bias_init_stdev'], self.num_hidden)
-        self.bias_output = np.random.normal(config['bias_init_mean'], config['bias_init_stdev'], self.num_outputs)
-    
-    def activation(self, x):
-        return np.tanh(x)
-    
-    def feedforward(self, inputs):
-        hidden_input = np.dot(inputs, self.weights_input_hidden) + self.bias_hidden
-        hidden_output = self.activation(hidden_input)
-        final_input = np.dot(hidden_output, self.weights_hidden_output) + self.bias_output
-        return self.activation(final_input)
-
-class Bird:
-    def __init__(self, config, nn=None):
-        self.x = 50
-        self.y = 300
-        self.velocity = 0
-        self.gravity = 1
-        self.lift = -12
-        self.width = 20
-        self.height = 20
-        self.fitness = 0
-        self.score = 0
-        self.high_score_multiplier = 0
-        self.nn = nn if nn else NeuralNetwork(config)
-    
-    def update(self):
-        self.velocity += self.gravity
-        self.y += self.velocity
-        self.fitness += 0.1
-
-    def decide(self, pipes):
-        nearest_pipe = self.get_nearest_pipe(pipes)
-        if nearest_pipe:
-            inputs = np.array([self.y, self.velocity, nearest_pipe.x - self.x, nearest_pipe.gap_y])
-            output = self.nn.feedforward(inputs)
-            if output > 0.5:
-                self.jump()
-
-    def jump(self):
-        self.velocity = self.lift
-
-    def get_nearest_pipe(self, pipes):
-        nearest_pipe = None
-        min_distance = float('inf')
-        for pipe in pipes:
-            distance = pipe.x - self.x
-            if 0 < distance < min_distance:
-                nearest_pipe = pipe
-                min_distance = distance
-        return nearest_pipe
-
-    def check_collision(self, pipes):
-        for pipe in pipes:
-            if (pipe.x < self.x + self.width < pipe.x + pipe.width) or (pipe.x < self.x < pipe.x + pipe.width):
-                if not (pipe.gap_y < self.y < pipe.gap_y + pipe.gap_height):
-                    return True
-        return self.y < 0 or self.y > 600
-
-def evolve_population(birds, config, mutation_rate=0.05, num_elites=2):
-    birds.sort(key=lambda b: b.fitness, reverse=True)
-
-    new_birds = []
-    while len(new_birds) < len(birds) - num_elites:
-        parent1, parent2 = random.choices(birds[:2], k=2)
-        child_nn = crossover(parent1.nn, parent2.nn, config)
-        mutate(child_nn, config, mutation_rate)
-        new_birds.append(Bird(config, nn=child_nn))
-    
-    new_birds += [Bird(config, nn=elite.nn) for elite in new_birds]
-    return new_birds
-
-def crossover(nn1, nn2, config):
-    child_nn = NeuralNetwork(config)
-    
-    for i in range(nn1.weights_input_hidden.shape[0]):
-        for j in range(nn1.weights_input_hidden.shape[1]):
-            child_nn.weights_input_hidden[i][j] = random.choice([nn1.weights_input_hidden[i][j], nn2.weights_input_hidden[i][j]])
-    
-    for i in range(nn1.weights_hidden_output.shape[0]):
-        for j in range(nn1.weights_hidden_output.shape[1]):
-            child_nn.weights_hidden_output[i][j] = random.choice([nn1.weights_hidden_output[i][j], nn2.weights_hidden_output[i][j]])
-
-    child_nn.bias_hidden = random.choice([nn1.bias_hidden, nn2.bias_hidden])
-    child_nn.bias_output = random.choice([nn1.bias_output, nn2.bias_output])
-    
-    return child_nn
-
-def mutate(nn, config, mutation_rate):
-    for i in range(nn.weights_input_hidden.shape[0]):
-        for j in range(nn.weights_input_hidden.shape[1]):
-            if random.random() < mutation_rate:
-                nn.weights_input_hidden[i][j] += np.random.normal(0, config['weight_mutate_power'])
-    
-    for i in range(nn.weights_hidden_output.shape[0]):
-        for j in range(nn.weights_hidden_output.shape[1]):
-            if random.random() < mutation_rate:
-                nn.weights_hidden_output[i][j] += np.random.normal(0, config['weight_mutate_power'])
-    
-    if random.random() < mutation_rate:
-        nn.bias_hidden += np.random.normal(0, config['bias_mutate_power'])
-    
-    if random.random() < mutation_rate:
-        nn.bias_output += np.random.normal(0, config['bias_mutate_power'])
-
-class Pipe:
-    def __init__(self, x, gap_y, gap_height=150):
-        self.x = x
-        self.gap_y = gap_y
-        self.gap_height = gap_height
-        self.width = 50
-        self.passed = False
-
-    def update(self):
-        self.x -= 5
+from Bird import Bird
+from Evolution import evolve_population
+from Pipe import Pipe
 
 def game_loop(config):
     pygame.init()
@@ -203,7 +81,7 @@ def game_loop(config):
         screen.blit(score_text, (10, 10))
 
         pygame.display.flip()
-        clock.tick(100)
+        clock.tick(800)
 
     pygame.quit()
 
