@@ -7,44 +7,15 @@ This project is a machine learning-based implementation of the Flappy Bird game,
 </div>
 
 
-## Features
-- **Neural Network Control**: Each bird in the game is controlled by a neural network that learns how to navigate the pipes.
-- **Genetic Algorithm**: Birds evolve using a genetic algorithm with elitism, crossover, and mutation.
-- **Fitness-Based Learning**: Birds are rewarded based on their performance, such as proximity to pipes and surviving longer.
-- **Visual Feedback**: The game is displayed using Pygame, providing visual feedback on the birds’ performance and evolution.
+## **Project Structure**
 
-## Project Structure
-
-- **NeuralNetwork**: Defines the neural network architecture and handles feedforward operations using a tanh activation function.
-- **Bird**: Represents a bird controlled by a neural network. Each bird has a fitness score that tracks its survival and performance.
-- **Pipe**: Represents the obstacles (pipes) that the birds need to navigate.
-- **Evolution Functions**: `evolve_population`, `crossover`, and `mutate` handle the genetic algorithm, including breeding and mutation of birds.
-- **Game Loop**: Runs the game simulation, updating birds and pipes, rendering the game, and handling generation evolution.
-
-## Configuration
-
-You can modify the neural network and genetic algorithm parameters in the `bird_config` dictionary within the script. Parameters include:
-- `num_inputs`: Number of input neurons (default: 4).
-- `num_hidden`: Number of hidden neurons (default: 20).
-- `num_outputs`: Number of output neurons (default: 1).
-- `weight_init_mean`, `weight_init_stdev`: Mean and standard deviation for weight initialization.
-- `bias_init_mean`, `bias_init_stdev`: Mean and standard deviation for bias initialization.
-- `weight_mutate_power`, `bias_mutate_power`: Controls the magnitude of mutation for weights and biases during evolution.
-
-## Gameplay
-
-- Birds start at position `(50, 300)` and navigate a series of pipes.
-- Birds decide whether to "jump" based on the output of their neural network, which processes information like the bird's current position, velocity, and the position of the nearest pipe.
-- A generation ends when all birds have collided with pipes or the ground.
-- Each bird's performance is measured using a fitness score, which helps the genetic algorithm evolve better birds for future generations.
-
-## Fitness Function
-
-- Birds are rewarded for:
-    - Surviving longer (general fitness increase).
-    - Approaching the nearest pipe.
-    - Passing through pipes (large fitness boost).
-    - An additional exponential multiplier is applied for higher scores.
+- `bird.py`: Contains the `Bird` class representing the player.
+- `config.py`: Contains the configuration for the neural network and evolution.
+- `evolution.py`: Contains the evolutionary algorithm functions.
+- `game.py`: Contains the game loop and main entry point.
+- `neural_network.py`: Contains the `NeuralNetwork` class.
+- `pipe.py`: Contains the `Pipe` class representing obstacles.
+- `requirements.txt`: Lists the required Python packages.
 
 ## Credits
 
